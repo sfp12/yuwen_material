@@ -44,26 +44,29 @@ public class YuwenController {
 		cong = URLDecoder.decode(cong, "utf-8");
 		dao = URLDecoder.decode(dao, "utf-8");
 		jiansuoci = URLDecoder.decode(jiansuoci, "utf-8");
-		
 		String sql = "";
-		if(pipei.equals("模糊")){
-			pipei = "like";
-			jiansuoci = "%"+jiansuoci+"%";
-		}else{
-			pipei = "=";
-			jiansuoci = jiansuoci;
-		}
-		
-		if(jiansuoci.length() > 2){
+		if(jiansuoci.length() != 0){
+			if(pipei.equals("模糊")){
+				pipei = "like";
+				jiansuoci = "%"+jiansuoci+"%";
+			}else{
+				pipei = "=";
+				jiansuoci = jiansuoci;
+			}
 			if(jiansuoxiang.equals("xuanwentimu") && pipei.equals("=")){
 				sql="select * from qianqi1900_1949 where (xuanwentimu = '"+jiansuoci+"' or timubieming = '"+jiansuoci+"')  and (nianfen between "+cong+" and "+dao+")";
 			}else{
 				sql="select * from qianqi1900_1949 where ("+jiansuoxiang+" "+pipei+" '"+jiansuoci+"') and (nianfen between "+cong+" and "+dao+")";
-			}			
+			}
 		}else{
-			
+			if(pipei.equals("模糊")){
+				pipei = "like";				
+			}else{
+				pipei = "=";				
+			}
 			sql="select * from qianqi1900_1949 where nianfen between "+cong+" and "+dao;
-		}
+		}		
+		
 		System.out.println("sql:"+sql);
 		List<Material> l = new ArrayList<Material>();
 		Connection conn=DbUtil.getCon();
